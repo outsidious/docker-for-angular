@@ -1,23 +1,24 @@
-# Используем за основу образ Node.js
+# Stage 1: Сборка приложения
 FROM node:20-alpine AS build
 
-# Устанавливаем рабочую директорию в контейнере
 WORKDIR /app
-
-# Копируем package.json и package-lock.json
 COPY package*.json ./
+RUN npm install -g @angular/cli@17
+RUN npm ci
 
-# Устанавливаем зависимости
-RUN npm install
-
-# Копируем все файлы приложения
 COPY . .
+RUN ng build
 
-# Устанавливаем переменную окружения PORT
-ENV PORT=4200
 
-# Экспонируем порт 4200
-EXPOSE 4200
+# Stage 2: Запуск NGINX и обслуживание статических файлов
+FROM nginx:alpine
 
-# Команда для запуска приложения
-CMD ["npm", "start"]
+# Меняем конфиг nginx-а на собственный
+COPY nginx.conf /etc/nginx/nginx.conf
+# Копируем собранное приложение из предыдущего этапа в рабочую директорию nginx
+COPY --from=build /app/dist/frontend/browser /usr/share/nginx/html
+
+EXPOSE 80
+
+# Запускаем nginx
+CMD ["nginx", "-g", "daemon off;"]
