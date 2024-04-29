@@ -2,6 +2,7 @@ FROM node:20-alpine AS build
 
 WORKDIR /app
 COPY package*.json nx.json ./
+#COPY scripts ./
 RUN npm install -g nx@18
 RUN npm ci
 
