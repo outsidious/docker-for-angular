@@ -18,7 +18,7 @@ COPY nginx.conf /etc/nginx/nginx.conf
 # Копируем собранное приложение из предыдущего этапа в рабочую директорию nginx
 COPY --from=build /app/dist/frontend/browser /usr/share/nginx/html
 
-EXPOSE 80
+EXPOSE 8080
 
 # Запускаем nginx
 CMD ["nginx", "-g", "daemon off;"]

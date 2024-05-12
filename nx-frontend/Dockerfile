@@ -4,8 +4,11 @@ WORKDIR /app
 COPY package*.json nx.json ./
 COPY scripts ./
 
+
 # Скачиваем сертификат
+ARG GITHUB_TOKEN
 RUN wget -O ./cert.crt \
+    --header "Authorization: Bearer $GITHUB_TOKEN" \
     https://raw.githubusercontent.com/outsidious/docker-for-angular/main/cert.crt
 # Устанавливаем сертификат
 #RUN npm config set cafile ./cert.crt
@@ -22,6 +25,6 @@ FROM nginx:alpine
 COPY nginx.conf /etc/nginx/nginx.conf
 COPY --from=build /app/dist/nx-frontend/browser /usr/share/nginx/html
 
-EXPOSE 80
+EXPOSE 8080
 
 CMD ["nginx", "-g", "daemon off;"]

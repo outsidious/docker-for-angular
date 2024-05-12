@@ -1,0 +1,12 @@
+version: "3"
+services:
+  frontend:
+    image: frontend:latest
+    restart: on-failure
+    ports:
+      - "8080:8080"
+    build:
+      context: ./nx-frontend
+      args:
+        GITHUB_TOKEN: ${GITHUB_TOKEN}
+
