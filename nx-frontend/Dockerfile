@@ -7,9 +7,9 @@ COPY scripts ./
 
 # Скачиваем сертификат
 ARG GITHUB_TOKEN
-RUN wget -O ./cert.crt \
-    --header "Authorization: Bearer $GITHUB_TOKEN" \
-    https://raw.githubusercontent.com/outsidious/docker-for-angular/main/cert.crt
+#RUN wget -O ./cert.crt \
+#    --header "Authorization: Bearer $GITHUB_TOKEN" \
+#    https://raw.githubusercontent.com/outsidious/docker-for-angular/main/cert.crt
 # Устанавливаем сертификат
 #RUN npm config set cafile ./cert.crt
 
